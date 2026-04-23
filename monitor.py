@@ -1,3 +1,4 @@
+import google.generativeai as genai
 import datetime
 import requests
 import subprocess
@@ -6,10 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Konfigurasi Vertex AI REST API
-API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL = "gemini-2.0-flash"
-VERTEX_URL = f"https://generativelanguage.googleapis.com/v1/models/{MODEL}:generateContent?key={API_KEY}"
+# Konfigurasi API Gemini
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
 def get_ssh_attempts():
     result = subprocess.check_output(
@@ -20,33 +21,11 @@ def get_ssh_attempts():
 
 def get_gemini_analysis(log_text):
     try:
-        payload = {
-            "contents": [
-                {
-                    "parts": [
-                        {
-                            "text": (
-                                f"Ada percobaan login brute force:\n{log_text}\n"
-                                f"Apa yang sebaiknya saya lakukan? responnya jangan terlalu panjang"
-                            )
-                        }
-                    ]
-                }
-            ]
-        }
-        response = requests.post(
-            VERTEX_URL,
-            headers={"Content-Type": "application/json"},
-            json=payload
+        response = model.generate_content(
+            f"Ada percobaan login brute force:\n{log_text}\n"
+            f"Apa yang sebaiknya saya lakukan? responnya jangan terlalu panjang"
         )
-        result = response.json()
-        
-        # Cek jika response tidak mengandung candidates
-        if "candidates" not in result:
-            error_msg = result.get("error", {}).get("message", str(result))
-            return f"⚠️ Gemini error: {error_msg}"
-            
-        return result["candidates"][0]["content"]["parts"][0]["text"]
+        return response.text
     except Exception as e:
         return f"⚠️ Gagal mendapatkan analisis dari Gemini: {e}"
 
