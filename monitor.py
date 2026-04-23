@@ -2,9 +2,13 @@ import google.generativeai as genai
 import datetime
 import requests
 import subprocess
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Konfigurasi API Gemini
-genai.configure(api_key="AIzaSyDRwwI4jdt8vQYixfYecQ65lG8c3QN5Fak")
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
@@ -26,9 +30,9 @@ def get_gemini_analysis(log_text):
         return f"⚠️ Gagal mendapatkan analisis dari Gemini: {e}"
 
 def send_whatsapp(message):
-    token = "4wjWV9yLvnyYDvMB4M3k"
+    token = os.getenv("FONNTE_TOKEN")
     payload = {
-        "target": "628975574089",  # contoh: 6281234567890
+        "target": os.getenv("TARGET_NUMBER"),
         "message": message,
     }
     headers = {"Authorization": token}
