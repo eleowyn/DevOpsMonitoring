@@ -9,7 +9,7 @@ load_dotenv()
 # Konfigurasi Vertex AI REST API
 API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL = "gemini-2.0-flash"
-VERTEX_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent?key={API_KEY}"
+VERTEX_URL = f"https://generativelanguage.googleapis.com/v1/models/{MODEL}:generateContent?key={API_KEY}"
 
 def get_ssh_attempts():
     result = subprocess.check_output(
