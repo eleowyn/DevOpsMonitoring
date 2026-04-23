@@ -40,6 +40,12 @@ def get_gemini_analysis(log_text):
             json=payload
         )
         result = response.json()
+        
+        # Cek jika response tidak mengandung candidates
+        if "candidates" not in result:
+            error_msg = result.get("error", {}).get("message", str(result))
+            return f"⚠️ Gemini error: {error_msg}"
+            
         return result["candidates"][0]["content"]["parts"][0]["text"]
     except Exception as e:
         return f"⚠️ Gagal mendapatkan analisis dari Gemini: {e}"
