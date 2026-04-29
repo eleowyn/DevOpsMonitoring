@@ -22,8 +22,18 @@ def get_ssh_attempts():
 def get_gemini_analysis(log_text):
     try:
         response = model.generate_content(
-            f"Ada percobaan login brute force:\n{log_text}\n"
-            f"Apa yang sebaiknya saya lakukan? responnya jangan terlalu panjang"
+            f"""Kamu adalah analis keamanan server Linux.
+Analisis log SSH attack berikut dan balas dalam Bahasa Indonesia.
+
+LOG:
+{log_text}
+
+Balas HANYA dengan format ini (singkat & padat):
+LEVEL ANCAMAN: [RENDAH/SEDANG/TINGGI/KRITIS]
+ANALISIS: [1-2 kalimat penjelasan]
+TINDAKAN SEGERA:
+1. [tindakan spesifik]
+2. [tindakan spesifik]"""
         )
         return response.text
     except Exception as e:
