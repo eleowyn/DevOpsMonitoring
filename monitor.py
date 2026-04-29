@@ -28,12 +28,13 @@ Analisis log SSH attack berikut dan balas dalam Bahasa Indonesia.
 LOG:
 {log_text}
 
-Balas HANYA dengan format ini (singkat & padat):
+WAJIB balas dengan format PERSIS seperti ini, jangan ada yang dilewat:
 LEVEL ANCAMAN: [RENDAH/SEDANG/TINGGI/KRITIS]
-ANALISIS: [1-2 kalimat penjelasan]
+ANALISIS: [1-2 kalimat, sebutkan IP dan user spesifik dari log]
 TINDAKAN SEGERA:
-1. [tindakan spesifik]
-2. [tindakan spesifik]"""
+1. [perintah linux spesifik jika ada]
+2. [tindakan spesifik]
+3. [tindakan spesifik]"""
         )
         return response.text
     except Exception as e:
